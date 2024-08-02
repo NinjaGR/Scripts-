@@ -1,0 +1,31 @@
+-- Variables de service
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+-- Fonction pour créer l'ESP
+local function createESP(player)
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "ESPHighlight"
+    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Rouge
+    highlight.FillTransparency = 0.5
+    highlight.OutlineTransparency = 0.5
+    highlight.Adornee = player.Character
+    highlight.Parent = player.Character
+end
+
+-- Fonction pour mettre à jour l'ESP
+local function updateESP()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            if not player.Character:FindFirstChild("ESPHighlight") then
+                createESP(player)
+            else
+                local highlight = player.Character:FindFirstChild("ESPHighlight")
+                highlight.Adornee = player.Character
+            end
+        end
+    end
+end
+
+-- Connecter la fonction d'update à chaque frame
+RunService.RenderStepped:Connect(updateESP)
